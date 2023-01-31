@@ -34,7 +34,7 @@
 import messageService from "../services/messageService";
 
 export default {
-  name: "Messages",
+  name: "MessagesView",
   data() {
     return {
       subject: "",
@@ -46,6 +46,15 @@ export default {
     this.messages = await messageService.fetchMessages();
   },
   methods: {
+    login() {
+      // TODO
+    },
+    logout() {
+      // TODO
+    },
+    register() {
+      // TODO
+    },
     addMessage(message) {
       this.messages.push(message);
       messageService.postMessage(message);

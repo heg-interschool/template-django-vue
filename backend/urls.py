@@ -21,8 +21,8 @@ from .api.views import index_view, UserViewSet, GroupViewSet, MessageViewSet
 
 router = routers.DefaultRouter()
 router.register('messages', MessageViewSet)
-router.register(r'users', UserViewSet)
-router.register(r'groups', GroupViewSet)
+router.register('users', UserViewSet)
+router.register('groups', GroupViewSet)
 
 urlpatterns = [
     # http://localhost:8000/
@@ -31,7 +31,10 @@ urlpatterns = [
     # http://localhost:8000/api/<router-viewsets>
     path('api/', include(router.urls)),
 
-    path('api-auth/', include('rest_framework.urls', namespace='rest_framework')),
+    path('api/explorer/', include('rest_framework.urls', namespace='rest_framework')),
+
+    path('api/dj-rest-auth/', include('dj_rest_auth.urls')),
+    path('api/dj-rest-auth/registration/', include('dj_rest_auth.registration.urls')),
 
     # http://localhost:8000/api/admin/
     path('api/admin/', admin.site.urls),

@@ -26,7 +26,14 @@ SECRET_KEY = 'django-insecure-o#i0s2v!-&@-b5j5*#q1ao6_^)4*brwc!w!81ii-@2=52$_fgh
 DEBUG = True
 
 ALLOWED_HOSTS = ['*']
-CSRF_TRUSTED_ORIGINS = ['http://localhost:8080', 'http://localhost:8000']
+# CSRF_TRUSTED_ORIGINS = ['http://localhost:8080', 'http://localhost:8000']
+
+# CORS
+CORS_ALLOWED_ORIGINS = [
+    "http://localhost:5173",
+]
+
+SITE_ID = 1
 
 # Application definition
 
@@ -39,12 +46,21 @@ INSTALLED_APPS = [
     'whitenoise.runserver_nostatic',  # < Per Whitenoise, to disable built in runserver in dev
     'django.contrib.staticfiles',
     'rest_framework',
+    'rest_framework.authtoken',
+    'django.contrib.sites',
+    'allauth',
+    'allauth.account',
+    'allauth.socialaccount',
+    'dj_rest_auth',
+    'dj_rest_auth.registration',
+    "corsheaders",
     'backend.api',
 ]
 
 MIDDLEWARE = [
     'django.middleware.security.SecurityMiddleware',
     'whitenoise.middleware.WhiteNoiseMiddleware',
+    'corsheaders.middleware.CorsMiddleware',  # allow access from diffferent origin for web clients
     'django.contrib.sessions.middleware.SessionMiddleware',
     'django.middleware.common.CommonMiddleware',
     'django.middleware.csrf.CsrfViewMiddleware',
@@ -144,6 +160,17 @@ DEFAULT_AUTO_FIELD = 'django.db.models.BigAutoField'
 
 # Default Django REST framework settings
 # https://www.django-rest-framework.org/api-guide/settings/
-REST_FRAMEWORK = {}
+REST_FRAMEWORK = {
+    'DEFAULT_AUTHENTICATION_CLASSES': (
+        'rest_framework.authentication.SessionAuthentication',
+        'rest_framework.authentication.BasicAuthentication',
+        'dj_rest_auth.jwt_auth.JWTCookieAuthentication',
+    ),
+    'DEFAULT_PERMISSION_CLASSES': (
+        'rest_framework.permissions.IsAuthenticatedOrReadOnly',
+    )
+}
 
-
+REST_USE_JWT = True
+JWT_AUTH_COOKIE = 'django-vue-my-app-auth'
+JWT_AUTH_REFRESH_COOKIE = 'django-vue-my-refresh-token'

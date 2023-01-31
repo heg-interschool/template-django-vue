@@ -15,6 +15,11 @@ data at `/api/`, and static files at `/static/`. Django admin panel is also avai
 The application templates from Vue CLI `create` and Django `createproject` are kept as close as possible to their
 original state, except where a different configuration is needed for better integration of the two frameworks.
 
+### Authentication
+Sample register, login, logout function are implemented in the client.
+More endpoints options are available in the backend,
+see [dj-rest-auth](https://dj-rest-auth.readthedocs.io/en/latest/api_endpoints.html).
+
 ### Demo
 
 [Live Demo](https://django-vue-template-demo.herokuapp.com/)
@@ -24,7 +29,8 @@ original state, except where a different configuration is needed for better inte
 * Django
 * Django REST framework
 * Django Whitenoise, CDN Ready
-* Vue CLI 4
+* login via JWT using dj-rest-auth
+* Vue 3 Vite
 * Vue Router
 * Gunicorn
 * Configuration for Heroku Deployment
@@ -48,7 +54,8 @@ original state, except where a different configuration is needed for better inte
 Before getting started you should have the following installed and running:
 
 - [X] Node - [instructions](https://nodejs.org/en/)
-- [X] Vue CLI 3 - [instructions](https://cli.vuejs.org/guide/installation.html)
+- [X] Vue 3 - [instructions](https://vuejs.org/)
+- [X] Vite - [instructions](https://vitejs.dev/)
 - [X] Python 3 - [instructions](https://wiki.python.org/moin/BeginnersGuide)
 - [X] Pipenv - [instructions](https://pipenv.readthedocs.io/en/latest/install/#installing-pipenv)
 
@@ -76,7 +83,7 @@ $ python manage.py runserver
 From another tab in the same directory:
 
 ```
-$ npm run serve
+$ npm run dev
 ```
 
 The Vue application will be served from [`localhost:8080`](http://localhost:8080/) and the Django API
@@ -159,3 +166,26 @@ DJANGO_SETTINGS_MODULE=backend.settings.prod
 heroku ps:scale web=1
 heroku logs --tail
 heroku run bash
+
+
+
+django-cors-headers
+https://pypi.org/project/django-cors-headers/
+
+CORS_ALLOWED_ORIGINS = [
+    "https://example.com",
+    "https://sub.example.com",
+    "http://localhost:8080",
+    "http://127.0.0.1:9000",
+]
+
+https://dj-rest-auth.readthedocs.io/en/latest/installation.html
+with jwt
+
+
+POST http://localhost:8000/api/dj-rest-auth/registration/
+{
+	"username": "test",
+	"password1": "Test1234Demo",
+	"password2": "Test1234Demo"
+}

@@ -10,6 +10,9 @@ psycopg2-binary = "*"
 dj-database-url = "*"
 gunicorn = "*"
 whitenoise = "*"
+django-cors-headers = "*"
+dj-rest-auth = {extras = ["with_social"], version = "*"}
+djangorestframework-simplejwt = "*"
 
 [dev-packages]
 
