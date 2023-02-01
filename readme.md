@@ -28,7 +28,8 @@ see [dj-rest-auth](https://dj-rest-auth.readthedocs.io/en/latest/api_endpoints.h
 
 * Django
 * Django REST framework
-* Django Whitenoise, CDN Ready
+* Django CORS Headers
+* Django Whitenoise
 * login via JWT using dj-rest-auth
 * Vue 3 Vite
 * Vue Router
@@ -86,13 +87,22 @@ From another tab in the same directory:
 $ npm run dev
 ```
 
-The Vue application will be served from [`localhost:8080`](http://localhost:8080/) and the Django API
+The Vue application will be served from [`localhost:5173`](http://localhost:5173/) and the Django API
 and static files will be served from [`localhost:8000`](http://localhost:8000/).
 
 The dual dev server setup allows you to take advantage of
 webpack's development server with hot module replacement.
-Proxy config in [`vue.config.js`](/vue.config.js) is used to route the requests
-back to django's API on port 8000.
+
+This requires cors to be configured correctly in Django.
+
+```
+CORS_ALLOWED_ORIGINS = [
+    "https://example.com",
+    "https://sub.example.com",
+    "http://localhost:8080",
+    "http://127.0.0.1:9000",
+]
+```
 
 If you would rather run a single dev server, you can run Django's
 development server only on `:8000`, and you have to build the Vue app first
@@ -104,6 +114,8 @@ $ python manage.py runserver
 ```
 
 ## Deploy
+
+For produciton you need to change api.js baseURL
 
 ### Heroku Server
 
@@ -122,6 +134,23 @@ $ heroku config:set DJANGO_SECRET_KEY='...(your django SECRET_KEY value)...'
 $ git push heroku
 ```
 
+env variables
+```
+DATABASE_URL
+DJANGO_DEBUG
+DJANGO_SECRET_KEY
+DJANGO_ALLOWED_HOSTS
+DJANGO_SETTINGS_MODULE=backend.settings.prod
+```
+
+Other heroku commands
+
+```
+heroku ps:scale web=1
+heroku logs --tail
+heroku run bash
+```
+
 Heroku's nodejs buildpack will handle install for all the dependencies from the [`package.json`](/package.json) file.
 It will then trigger the `postinstall` command which calls `yarn build`.
 This will create the bundled `dist` folder which will be served by whitenoise.
@@ -133,59 +162,9 @@ The [`Procfile`](/Procfile) will run Django migrations and then launch Django'S 
 
 ## Static Assets
 
-See `settings.base` and [`vue.config.js`](/vue.config.js) for notes on static assets strategy.
+See [`vite.config.js`](/vite.config.js) for notes on static assets strategy.
 
 This template implements the approach suggested by Whitenoise Django.
 For more details see [WhiteNoise Documentation](http://whitenoise.evans.io/en/stable/django.html)
 
 It uses Django Whitenoise to serve all static files and Vue bundled files at `/static/`.
-While it might seem inefficient, the issue is immediately solved by adding a CDN
-with Cloudfront or similar.
-Use [`vue.config.js`](/vue.config.js) > `baseUrl` option to set point all your assets to the CDN,
-and then set your CDN's origin back to your domains `/static` url.
-
-Whitenoise will serve static files to your CDN once, but then those assets are cached
-and served directly by the CDN.
-
-This allows for an extremely simple setup without the need for a separate static server.
-
-[Cloudfront Setup Wiki](https://github.com/gtalarico/django-vue-template/wiki/Setup-CDN-on-Cloud-Front)
-
-
-
-pip install pipenv
-pipenv shell
-
-env
-DATABASE_URL
-DJANGO_DEBUG
-DJANGO_SECRET_KEY
-DJANGO_ALLOWED_HOSTS
-DJANGO_SETTINGS_MODULE=backend.settings.prod
-
-heroku ps:scale web=1
-heroku logs --tail
-heroku run bash
-
-
-
-django-cors-headers
-https://pypi.org/project/django-cors-headers/
-
-CORS_ALLOWED_ORIGINS = [
-    "https://example.com",
-    "https://sub.example.com",
-    "http://localhost:8080",
-    "http://127.0.0.1:9000",
-]
-
-https://dj-rest-auth.readthedocs.io/en/latest/installation.html
-with jwt
-
-
-POST http://localhost:8000/api/dj-rest-auth/registration/
-{
-	"username": "test",
-	"password1": "Test1234Demo",
-	"password2": "Test1234Demo"
-}

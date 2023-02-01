@@ -6,17 +6,28 @@
       ORM and Rest Framework.
     </p>
     <br />
-    <p>Subject</p>
-    <input type="text" placeholder="Hello" v-model="subject" />
-    <p>Message</p>
-    <input type="text" placeholder="From the other side" v-model="msgBody" />
-    <br /><br />
-    <input
-      type="submit"
-      value="Add"
-      @click="addMessage({ subject: subject, body: msgBody })"
-      :disabled="!subject || !msgBody"
-    />
+    <div v-if="user">
+      <p>Subject</p>
+      <input type="text" placeholder="Hello" v-model="subject" />
+      <p>Message</p>
+      <input type="text" placeholder="From the other side" v-model="msgBody" />
+      <br /><br />
+      {{ user }}
+      <input
+        type="submit"
+        value="Add"
+        @click="addMessage({ subject: subject, body: msgBody })"
+        :disabled="!subject || !msgBody"
+      />
+      <input type="submit" value="Logout" @click="logout" />
+    </div>
+    <div v-else>
+      <p>You need to be logged in to add messages</p>
+      <input type="text" v-model="username" placeholder="username" />
+      <input type="password" v-model="password" placeholder="password" />
+      <input type="submit" value="Login" @click="login" />
+      <input type="submit" value="Register" @click="register" />
+    </div>
 
     <hr />
     <h3>Messages on Database</h3>
@@ -25,13 +36,19 @@
       <p class="msg-index">[{{ index }}]</p>
       <p class="msg-subject" v-html="msg.subject"></p>
       <p class="msg-body" v-html="msg.body"></p>
-      <input type="submit" @click="deleteMessage(msg.pk)" value="Delete" />
+      <input
+        type="submit"
+        @click="deleteMessage(msg.pk)"
+        value="Delete"
+        :disabled="!user"
+      />
     </div>
   </div>
 </template>
 
 <script>
 import messageService from "../services/messageService";
+import authService from "../services/authService";
 
 export default {
   name: "MessagesView",
@@ -40,24 +57,42 @@ export default {
       subject: "",
       msgBody: "",
       messages: [],
+      username: "",
+      password: "",
     };
   },
   async mounted() {
     this.messages = await messageService.fetchMessages();
   },
+  computed: {
+    user() {
+      return authService.user.value;
+    },
+  },
   methods: {
     login() {
-      // TODO
+      authService.login({
+        username: this.username,
+        password: this.password,
+      });
     },
     logout() {
-      // TODO
+      authService.logout();
     },
     register() {
-      // TODO
+      authService.register({
+        username: this.username,
+        password1: this.password,
+        password2: this.password,
+      });
     },
     addMessage(message) {
+      // local instant feedback
       this.messages.push(message);
+      // send to server
       messageService.postMessage(message);
+      this.subject = "";
+      this.msgBody = "";
     },
     deleteMessage(pk) {
       this.messages = this.messages.filter((obj) => obj.pk !== pk);

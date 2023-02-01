@@ -31,6 +31,7 @@ ALLOWED_HOSTS = ['*']
 # CORS
 CORS_ALLOWED_ORIGINS = [
     "http://localhost:5173",
+    "http://localhost:8080",
 ]
 
 SITE_ID = 1
