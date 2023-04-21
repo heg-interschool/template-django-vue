@@ -2,24 +2,25 @@
   <div class="hello">
     <img src="@/assets/logo-django.png" style="width: 250px" />
     <p>
-      The data below is added/removed from the SQLite Database using Django's
-      ORM and Rest Framework.
+      The data below is added/removed from the SQLite Database using Django's ORM and Rest
+      Framework.
     </p>
     <br />
     <div v-if="user">
+      Logged in user data: <pre>{{ user }}</pre>
+      <input type="submit" value="Logout" @click="logout" />
+      <br />
       <p>Subject</p>
       <input type="text" placeholder="Hello" v-model="subject" />
       <p>Message</p>
       <input type="text" placeholder="From the other side" v-model="msgBody" />
-      <br /><br />
-      {{ user }}
+      <br />
       <input
         type="submit"
         value="Add"
         @click="addMessage({ subject: subject, body: msgBody })"
         :disabled="!subject || !msgBody"
       />
-      <input type="submit" value="Logout" @click="logout" />
     </div>
     <div v-else>
       <p>You need to be logged in to add messages</p>
@@ -27,6 +28,9 @@
       <input type="password" v-model="password" placeholder="password" />
       <input type="submit" value="Login" @click="login" />
       <input type="submit" value="Register" @click="register" />
+      <p v-if="loginError">
+        {{ loginError }}
+      </p>
     </div>
 
     <hr />
@@ -36,19 +40,14 @@
       <p class="msg-index">[{{ index }}]</p>
       <p class="msg-subject" v-html="msg.subject"></p>
       <p class="msg-body" v-html="msg.body"></p>
-      <input
-        type="submit"
-        @click="deleteMessage(msg.pk)"
-        value="Delete"
-        :disabled="!user"
-      />
+      <input type="submit" @click="deleteMessage(msg.pk)" value="Delete" :disabled="!user" />
     </div>
   </div>
 </template>
 
 <script>
-import messageService from "../services/messageService";
-import authService from "../services/authService";
+import messageService from "../services/messageService"
+import authService from "../services/authService"
 
 export default {
   name: "MessagesView",
@@ -59,47 +58,59 @@ export default {
       messages: [],
       username: "",
       password: "",
-    };
+      loginError: ""
+    }
   },
   async mounted() {
-    this.messages = await messageService.fetchMessages();
+    authService.getUser()
+    this.messages = await messageService.fetchMessages()
   },
   computed: {
     user() {
-      return authService.user.value;
-    },
+      return authService.user.value
+    }
   },
   methods: {
     login() {
-      authService.login({
-        username: this.username,
-        password: this.password,
-      });
+      this.loginError = ""
+      authService
+        .login({
+          username: this.username,
+          password: this.password
+        })
+        .catch((err) => {
+          this.loginError = err.response.data
+        })
     },
     logout() {
-      authService.logout();
+      authService.logout()
     },
     register() {
-      authService.register({
-        username: this.username,
-        password1: this.password,
-        password2: this.password,
-      });
+      this.loginError = ""
+      authService
+        .register({
+          username: this.username,
+          password1: this.password,
+          password2: this.password
+        })
+        .catch((err) => {
+          this.loginError = err.response.data
+        })
     },
     addMessage(message) {
       // local instant feedback
-      this.messages.push(message);
+      this.messages.push(message)
       // send to server
-      messageService.postMessage(message);
-      this.subject = "";
-      this.msgBody = "";
+      messageService.postMessage(message)
+      this.subject = ""
+      this.msgBody = ""
     },
     deleteMessage(pk) {
-      this.messages = this.messages.filter((obj) => obj.pk !== pk);
-      messageService.deleteMessage(pk);
-    },
-  },
-};
+      this.messages = this.messages.filter((obj) => obj.pk !== pk)
+      messageService.deleteMessage(pk)
+    }
+  }
+}
 </script>
 
 <!-- Add "scoped" attribute to limit CSS to this component only -->

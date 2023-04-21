@@ -20,10 +20,6 @@ Sample register, login, logout function are implemented in the client.
 More endpoints options are available in the backend,
 see [dj-rest-auth](https://dj-rest-auth.readthedocs.io/en/latest/api_endpoints.html).
 
-### Demo
-
-[Live Demo](https://django-vue-template-demo.herokuapp.com/)
-
 ### Includes
 
 * Django
@@ -46,7 +42,7 @@ see [dj-rest-auth](https://dj-rest-auth.readthedocs.io/en/latest/api_endpoints.h
 | `/backend/api`       | Django App (`/api`)                        |
 | `/src`               | Vue App .                                  |
 | `/src/main.js`       | JS Application Entry Point                 |
-| `/public/index.html` | [Html Application Entry Point](https://cli.vuejs.org/guide/html-and-static-assets.html) (`/`)         |
+| `/index.html` | [Html Application Entry Point](https://cli.vuejs.org/guide/html-and-static-assets.html) (`/`)         |
 | `/public/static`     | Static Assets                              |
 | `/dist/`             | Bundled Assets Output (generated at `yarn build`) |
 
@@ -58,40 +54,51 @@ Before getting started you should have the following installed and running:
 - [X] Vue 3 - [instructions](https://vuejs.org/)
 - [X] Vite - [instructions](https://vitejs.dev/)
 - [X] Python 3 - [instructions](https://wiki.python.org/moin/BeginnersGuide)
-- [X] Pipenv - [instructions](https://pipenv.readthedocs.io/en/latest/install/#installing-pipenv)
 
 ## Setup Template
 
 ```
-$ git clone https://github.com/gtalarico/django-vue-template
-$ cd django-vue-template
+$ git clone https://github.com/heg-interschool/template-django-vue.git
+$ cd template-django-vue
 ```
 
-Setup
+Setup frontend
 ```
 $ npm install
-$ pipenv install --dev && pipenv shell
+```
+Setup backend
+```
+$ python -m venv venv
+# On windows
+$ .\venv\Scripts\Activate.ps1
+# On linux
+$ source venv/bin/activate
+$ pip install -r requirements.txt
 $ python manage.py migrate
 $ python manage.py createsuperuser --email admin@example.com --username admin
 ```
 
 ## Running Development Servers
 
-```
-$ python manage.py runserver
-```
-
-From another tab in the same directory:
+Frontend
 
 ```
 $ npm run dev
 ```
+From another tab in the same directory:
+
+Backend
+
+```
+$ python manage.py runserver
+```
+
 
 The Vue application will be served from [`localhost:5173`](http://localhost:5173/) and the Django API
 and static files will be served from [`localhost:8000`](http://localhost:8000/).
 
 The dual dev server setup allows you to take advantage of
-webpack's development server with hot module replacement.
+vite's development server with hot module replacement.
 
 This requires cors to be configured correctly in Django.
 
@@ -113,28 +120,19 @@ $ npm run build
 $ python manage.py runserver
 ```
 
+## urls
+http://localhost:5173/#/ for vue frontend
+http://localhost:8000/api/ for django rest framework api
+http://localhost:8000/api/admin/ for django admin
+
+
+
 ## Deploy
 
-For produciton you need to change api.js baseURL
+For production you need to change **baseURL** in `src/services/api.js` 
 
-### Heroku Server
-
-with heroku cli
-
-```
-$ heroku apps:create django-vue-template-demo
-$ heroku git:remote --app django-vue-template-demo
-$ heroku buildpacks:add --index 1 heroku/nodejs
-$ heroku buildpacks:add --index 2 heroku/python
-$ heroku addons:create heroku-postgresql:hobby-dev
-$ heroku config:set ALLOWED_HOSTS=<YOUR_UNIQUE_URL> on heroku
-$ heroku config:set DJANGO_SETTINGS_MODULE=backend.settings.prod
-$ heroku config:set DJANGO_SECRET_KEY='...(your django SECRET_KEY value)...'
-
-$ git push heroku
-```
-
-env variables
+### Production deployment
+env variables to configure
 ```
 DATABASE_URL
 DJANGO_DEBUG
@@ -142,23 +140,6 @@ DJANGO_SECRET_KEY
 DJANGO_ALLOWED_HOSTS
 DJANGO_SETTINGS_MODULE=backend.settings.prod
 ```
-
-Other heroku commands
-
-```
-heroku ps:scale web=1
-heroku logs --tail
-heroku run bash
-```
-
-Heroku's nodejs buildpack will handle install for all the dependencies from the [`package.json`](/package.json) file.
-It will then trigger the `postinstall` command which calls `yarn build`.
-This will create the bundled `dist` folder which will be served by whitenoise.
-
-The python buildpack will detect the [`Pipfile`](/Pipfile) and install all the python dependencies.
-
-The [`Procfile`](/Procfile) will run Django migrations and then launch Django'S app using gunicorn, as recommended by heroku.
-
 
 ## Static Assets
 

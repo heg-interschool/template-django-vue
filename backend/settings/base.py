@@ -33,6 +33,7 @@ CORS_ALLOWED_ORIGINS = [
     "http://localhost:5173",
     "http://localhost:8080",
 ]
+CORS_ALLOW_CREDENTIALS = True
 
 SITE_ID = 1
 
@@ -172,6 +173,7 @@ REST_FRAMEWORK = {
     )
 }
 
-REST_USE_JWT = True
-JWT_AUTH_COOKIE = 'django-vue-my-app-auth'
-JWT_AUTH_REFRESH_COOKIE = 'django-vue-my-refresh-token'
+REST_AUTH = {
+    'USE_JWT': True,
+}
+
