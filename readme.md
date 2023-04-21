@@ -44,7 +44,7 @@ see [dj-rest-auth](https://dj-rest-auth.readthedocs.io/en/latest/api_endpoints.h
 | `/src/main.js`       | JS Application Entry Point                 |
 | `/index.html` | [Html Application Entry Point](https://cli.vuejs.org/guide/html-and-static-assets.html) (`/`)         |
 | `/public/static`     | Static Assets                              |
-| `/dist/`             | Bundled Assets Output (generated at `yarn build`) |
+| `/dist/`             | Bundled Assets Output (generated at `npm run build`) |
 
 ## Prerequisites
 
