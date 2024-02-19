@@ -30,7 +30,6 @@ see [dj-rest-auth](https://dj-rest-auth.readthedocs.io/en/latest/api_endpoints.h
 * Vue 3 Vite
 * Vue Router
 * Gunicorn
-* Configuration for Heroku Deployment
 
 
 ### Template Structure

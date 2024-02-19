@@ -7,7 +7,8 @@
     </p>
     <br />
     <div v-if="user">
-      Logged in user data: <pre>{{ user }}</pre>
+      Logged in user data:
+      <pre>{{ user }}</pre>
       <input type="submit" value="Logout" @click="logout" />
       <br />
       <p>Subject</p>
@@ -97,11 +98,14 @@ export default {
           this.loginError = err.response.data
         })
     },
-    addMessage(message) {
+    addMessage(localMessage) {
       // local instant feedback
-      this.messages.push(message)
+      this.messages.push(localMessage)
       // send to server
-      messageService.postMessage(message)
+      messageService.postMessage(localMessage).then((serverMessage) => {
+        // update with result from server (to get pk and other fields added by server)
+        Object.assign(localMessage, serverMessage)
+      })
       this.subject = ""
       this.msgBody = ""
     },

@@ -16,7 +16,8 @@ Including another URLconf
 from django.contrib import admin
 from django.urls import path, include
 from rest_framework import routers
-
+from django.conf.urls.static import static
+from django.conf import settings
 from .api.views import index_view, UserViewSet, GroupViewSet, MessageViewSet
 
 router = routers.DefaultRouter()
@@ -38,4 +39,4 @@ urlpatterns = [
 
     # http://localhost:8000/api/admin/
     path('api/admin/', admin.site.urls),
-]
+] + static(settings.MEDIA_URL, document_root=settings.MEDIA_ROOT) # https://docs.djangoproject.com/en/5.0/howto/static-files/#serving-files-uploaded-by-a-user-during-development
