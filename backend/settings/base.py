@@ -30,7 +30,7 @@ SECRET_KEY = "django-insecure-o#i0s2v!-&@-b5j5*#q1ao6_^)4*brwc!w!81ii-@2=52$_fgh
 DEBUG = True
 
 ALLOWED_HOSTS = ["*"]
-# CSRF_TRUSTED_ORIGINS = ['http://localhost:8080', 'http://localhost:8000']
+# CSRF_TRUSTED_ORIGINS = ['http://localhost:8080', 'http://localhost:5173']
 
 # CORS
 CORS_ALLOWED_ORIGINS = [
@@ -181,6 +181,8 @@ REST_FRAMEWORK = {
 REST_AUTH = {
     "USE_JWT": True,
     "JWT_AUTH_COOKIE": "jwt-auth",
+    "JWT_AUTH_COOKIE_USE_CSRF": False,
+    "JWT_AUTH_COOKIE_ENFORCE_CSRF_ON_UNAUTHENTICATED": False,
 }
 
 SIMPLE_JWT = {

@@ -1,9 +1,11 @@
-django==5.0.2
-djangorestframework==3.14.0
+django==5.0.4
+djangorestframework==3.15.1
 psycopg2-binary==2.9.9
 dj-database-url==2.1.0
 gunicorn==21.2.0
 whitenoise==6.6.0
 django-cors-headers==4.3.1
-dj-rest-auth[with_social]==5.0.2
+# dj-rest-auth[with_social]==5.1.0
+# override with django 5 compatible version
+dj-rest-auth[with_social] @ git+https://github.com/iMerica/dj-rest-auth.git@048b8db0878efbac80ee9b280853c15b0d9f29f2
 djangorestframework-simplejwt==5.3.1
