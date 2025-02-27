@@ -32,10 +32,10 @@ urlpatterns = [
     # http://localhost:8000/api/<router-viewsets>
     path('api/', include(router.urls)),
 
-    path('api/explorer/', include('rest_framework.urls', namespace='rest_framework')),
+    path('api/accounts/', include('allauth.urls')),
+    path("api/allauth/", include("allauth.headless.urls")),
 
-    path('api/dj-rest-auth/', include('dj_rest_auth.urls')),
-    path('api/dj-rest-auth/registration/', include('dj_rest_auth.registration.urls')),
+    path('api/explorer/', include('rest_framework.urls', namespace='rest_framework')),
 
     # http://localhost:8000/api/admin/
     path('api/admin/', admin.site.urls),
