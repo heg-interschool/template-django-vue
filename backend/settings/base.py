@@ -188,3 +188,12 @@ REST_AUTH = {
 SIMPLE_JWT = {
     'ACCESS_TOKEN_LIFETIME': timedelta(hours=6),
 }
+
+# Local e-mail testing
+EMAIL_HOST = "localhost"
+EMAIL_PORT = 1025
+EMAIL_USE_TLS = False
+EMAIL_USE_SSL = False
+
+# docker run --rm --name=mailpit -p 8025:8025 -p 1025:1025 axllent/mailpit
+
