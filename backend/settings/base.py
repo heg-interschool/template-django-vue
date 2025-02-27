@@ -16,6 +16,7 @@ BASE_DIR = Path(__file__).resolve().parent.parent.parent
 MEDIA_URL = 'api/media/'
 MEDIA_ROOT = os.path.join(BASE_DIR, "media")
 
+
 # Quick-start development settings - unsuitable for production
 # See https://docs.djangoproject.com/en/5.1/howto/deployment/checklist/
 
@@ -26,7 +27,8 @@ SECRET_KEY = "django-insecure-o#i0s2v!-&@-b5j5*#q1ao6_^)4*brwc!w!81ii-@2=52$_fgh
 DEBUG = True
 
 ALLOWED_HOSTS = ["*"]
-# CSRF_TRUSTED_ORIGINS = ['http://localhost:8080', 'http://localhost:5173']
+
+CSRF_TRUSTED_ORIGINS = ['http://localhost:8080', 'http://localhost:5173']
 
 # CORS
 CORS_ALLOWED_ORIGINS = [

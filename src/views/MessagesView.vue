@@ -91,8 +91,7 @@ export default {
       authService
         .register({
           username: this.username,
-          password1: this.password,
-          password2: this.password
+          password: this.password
         })
         .catch((err) => {
           this.loginError = err.response.data

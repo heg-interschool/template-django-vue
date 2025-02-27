@@ -18,7 +18,7 @@ original state, except where a different configuration is needed for better inte
 ### Authentication
 Sample register, login, logout function are implemented in the client.
 More endpoints options are available in the backend,
-see [dj-rest-auth](https://dj-rest-auth.readthedocs.io/en/latest/api_endpoints.html).
+see [allauth.headless](https://docs.allauth.org/en/dev/headless/api.html).
 
 ### Includes
 
@@ -26,7 +26,7 @@ see [dj-rest-auth](https://dj-rest-auth.readthedocs.io/en/latest/api_endpoints.h
 * Django REST framework
 * Django CORS Headers
 * Django Whitenoise
-* login via JWT using dj-rest-auth
+* login via django-allauth headless
 * Vue 3 Vite
 * Vue Router
 * Gunicorn
@@ -72,6 +72,7 @@ $ python -m venv venv
 $ .\venv\Scripts\Activate.ps1
 # On linux
 $ source venv/bin/activate
+# Both
 $ pip install -r requirements.txt
 $ python manage.py migrate
 $ python manage.py createsuperuser --email admin@example.com --username admin
