@@ -5,7 +5,7 @@
 
 This template is a minimal example for an application using Vue and Django.
 
-Vue and Django are clearly separated in this project. Vue, npm and Webpack handles all frontend logic and bundling assessments. Django and Django REST framework to manage Data Models, Web API and serve static files.
+Vue and Django are clearly separated in this project. Vue, npm and Vite handles all frontend logic and bundling assessments. Django and Django REST framework to manage Data Models, Web API and serve static files.
 
 While it's possible to add endpoints to serve django-rendered html responses, the intention is to use Django primarily for the backend, and have view rendering and routing and handled by Vue + Vue Router as a Single Page Application (SPA).
 
